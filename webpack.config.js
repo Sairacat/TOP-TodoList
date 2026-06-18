@@ -4,9 +4,8 @@ import test from "node:test";
 
 
 export default {
-    mode: "production",
+    mode: "development",
     entry: "./src/index.js",
-    target: "web",
     output: {
         filename: "main.js",
         path: path.resolve(import.meta.dirname, "dist"),

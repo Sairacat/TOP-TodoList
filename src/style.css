@@ -1,0 +1,220 @@
+/*
+  Josh's Custom CSS Reset
+  https://www.joshwcomeau.com/css/custom-css-reset/
+*/
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+*:not(dialog) {
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    interpolate-size: allow-keywords;
+  }
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+input, button, textarea, select {
+  font: inherit;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+p {
+  text-wrap: pretty;
+}
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+#root, #__next {
+  isolation: isolate;
+}
+
+body {
+    min-height: 100vh;
+}
+
+.content-wrapper {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    transition: all 0.3s ease;
+}
+
+.main {
+    min-height: 100vh;
+    background-image: url(./pic/1.png);
+    background-position: right;
+}
+
+.sidebar {
+    position: relative;
+}
+
+.sidebar-wrapper {
+    padding: 20px;
+    overflow: hidden;
+}
+
+
+.sidebar-wrapper > div {
+    margin-bottom: 30px;
+}
+
+.collapse-btn {
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    border-radius: 26px;
+    background-color: lightslategray;
+    top: 30%;
+    right: -25px;
+}
+
+.collapse-btn:hover {
+    cursor: pointer;
+}
+
+.collapse {
+    grid-template-columns: 0px 1fr;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.user img {
+    height: 80px;
+    width: 80px;
+    border-radius: 41px;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.list div {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.list-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.list-title h2 {
+    font-size: 40px;
+}
+
+#addlist {
+    margin: 13vh auto auto 290px;
+    border: none;
+    border-radius: 12px;
+    padding: 20px;
+    animation: fadeIn 0.6s ease;
+}
+
+#addlist::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+#addlist .button-set {
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+}
+
+#listform h2 {
+    color: steelblue;
+    font-size: 40px;
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+#listform .holder {
+    margin-bottom: 50px;
+}
+
+#listname {
+    outline: none;
+    border: none;
+    border-bottom: 1px solid black;
+}
+
+#listform button {
+    color: white;
+    padding: 0.5rem 1.5rem;
+    font-size: 20px;
+    border: none;
+    border-radius: 999px;
+    transition: all 0.3s ease;
+}
+
+#listform button:hover {
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+#listform .confirm-list-btn {
+    background-color: yellowgreen;
+}
+
+#listform .cancel-list-btn {
+    background-color: red;
+}
+
+.addlistbtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background-color: greenyellow;
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    transition: all 0.6s ease;
+}
+
+.addlistbtn:hover {
+    cursor: pointer;
+    rotate: 360deg;
+}
+
+
+
+

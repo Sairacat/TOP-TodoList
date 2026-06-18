@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My TodoList</title>
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="sidebar">
+            <div class="sidebar-wrapper">
+                <div class="user">
+                    <img src="./pic/user.jpeg" alt="user-avatar">
+                    <div class="user-info">
+                        <div>DemonFrog</div>
+                        <div>dfrog911@gmail.com</div>
+                    </div>
+                </div>
+                <div class="list">
+                    <div class="list-title">
+                        <h2>My list</h2>
+                        <div class="addlistbtn">+</div>
+                    </div>
+                    <dialog id="addlist">
+                        <form action="" id="listform">
+                            <h2>Your new List!</h2>
+                            <div class="holder">
+                                <label for="listname">List Title:</label>
+                                <input type="text" id="listname" required>
+                            </div>
+                            <div class="button-set">
+                                <button class="confirm-list-btn" type="submit">Confirm</button>
+                                <button class="cancel-list-btn">Cancel</button>
+                            </div>
+                        </form>
+                    </dialog>
+                </div>
+            </div>
+            <div class="collapse-btn"></div>
+        </div>
+        <div class="main"></div>
+    </div>
+</body>
+</html>
