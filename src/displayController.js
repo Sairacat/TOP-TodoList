@@ -1,9 +1,13 @@
+import {addNewListToArray, deleteListFromArray, listArray} from "./list.js";
+
 function init() {
-    collapse();
-    displayListDialog();
+    InitializeCollapseEvent();
+    InitializeDialogEvent();
+    IntializeListEvent();
+
 }
 
-function collapse() {
+function InitializeCollapseEvent() {
     const collapseBtn = document.querySelector('.collapse-btn');
     const contentWrapper = document.querySelector('.content-wrapper');
     collapseBtn.addEventListener('click', () => {
@@ -11,7 +15,7 @@ function collapse() {
     })
 }
 
-function displayListDialog() {
+function InitializeDialogEvent() {
     const listDialog = document.querySelector('#addlist');
     const addListBtn = document.querySelector('.addlistbtn');
     const cancelListBtn = document.querySelector('.cancel-list-btn');
@@ -28,5 +32,45 @@ function displayListDialog() {
     })
 
 }
+
+function IntializeListEvent() {
+    const form = document.querySelector('#listform');
+    const listDialog = document.querySelector('#addlist');
+    const listName = document.querySelector('#listname');
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        addNewListToArray(listName.value)
+        displayListName();
+        listDialog.close();
+        form.reset();
+    })
+}
+
+function displayListName() {
+    const listContainer = document.querySelector('.list-container');
+    listContainer.replaceChildren();
+
+    for(const list of listArray) {
+        const listUnit = document.createElement('div');
+        listUnit.classList.add('list-unit');
+
+        const listName = document.createElement('div');
+        listName.textContent = list.name;
+
+        const deleteBtn = document.createElement('span');
+        deleteBtn.classList.add('delete-list-btn');
+        deleteBtn.id = list.listId;
+        deleteBtn.addEventListener('click', () => {
+            deleteListFromArray(deleteBtn.id);
+            displayListName();
+        })
+
+        listUnit.append(listName, deleteBtn);
+        listContainer.append(listUnit);
+    }
+}
+
+
 
 export {init};

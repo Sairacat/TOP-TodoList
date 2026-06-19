@@ -198,6 +198,36 @@ body {
     background-color: red;
 }
 
+.list-unit {
+    display: flex;
+    gap: 60px;
+    align-items: center;
+}
+
+.list-unit span {
+    background-color: red;
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.6s ease;
+}
+
+.list-unit span::before {
+    content: '';
+    width: 12px;
+    height: 2px;
+    background-color: white;
+    border-radius: 1px;
+}
+
+.list-unit span:hover {
+    cursor: pointer;
+    rotate: 360deg;
+}
+
 .addlistbtn {
     display: flex;
     justify-content: center;
