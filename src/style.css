@@ -163,7 +163,7 @@ body {
     }
 }
 
-#addlist .button-set {
+.button-set {
     display: flex;
     align-content: center;
     justify-content: space-between;
@@ -195,7 +195,8 @@ body {
     transition: all 0.3s ease;
 }
 
-#listform button:hover {
+#listform button:hover,
+.todosform button:hover {
     cursor: pointer;
     opacity: 0.7;
 }
@@ -272,6 +273,19 @@ body {
     grid-template-rows: 150px 1fr;
 }
 
+#addtodos {
+    padding: 20px;
+    margin: 15vh auto auto auto;
+    border: none;
+    border-radius: 12px;
+    animation: fadeIn 0.6s ease;
+}
+
+#addtodos::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
 .todos-area {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -294,6 +308,59 @@ body {
     align-items: center;
 }
 
+
+.todosform {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;   
+}
+
+.todosform h2 {
+    color: yellowgreen;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+.todosform input[type='text'] {
+    border: none;
+    outline: none;
+    border-bottom: 1px solid black;
+    width: 100px;
+    margin-right: 20px;
+}
+
+.todosform input[type='date'] {
+    width: 105px;
+}
+
+.todosform input[type='date']:hover {
+    cursor: pointer;
+}
+
+.formcontrol {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+textarea {
+    margin-left: 10px;
+    resize: none;
+}
+
+#addtodos button {
+    color: white;
+    padding: 0.5rem 1.5rem;
+    font-size: 15px;
+    border: none;
+    border-radius: 999px;
+    transition: all 0.3s ease;
+}
+
+.confirm-todos-btn {
+    background-color: greenyellow;
+}
+
+.cancel-todos-btn {
+    background-color: red;
+}
 
 
 

@@ -1,9 +1,10 @@
 import {addNewListToArray, deleteListFromArray, listArray} from "./list.js";
+import {addNewTodosToArray } from "./todos.js";
 
 function init() {
     InitializeCollapseEvent();
-    InitializeDialogEvent();
     IntializeListEvent();
+    InitializeTodosEvent();
 
 }
 
@@ -15,11 +16,12 @@ function InitializeCollapseEvent() {
     })
 }
 
-function InitializeDialogEvent() {
+function IntializeListEvent() {
+    const form = document.querySelector('#listform');
     const listDialog = document.querySelector('#addlist');
+    const listName = document.querySelector('#listname');
     const addListBtn = document.querySelector('.addlistbtn');
     const cancelListBtn = document.querySelector('.cancel-list-btn');
-    const form = document.querySelector('#listform');
 
     addListBtn.addEventListener('click', () => {
         listDialog.showModal();
@@ -31,13 +33,6 @@ function InitializeDialogEvent() {
         form.reset();
     })
 
-}
-
-function IntializeListEvent() {
-    const form = document.querySelector('#listform');
-    const listDialog = document.querySelector('#addlist');
-    const listName = document.querySelector('#listname');
-
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         addNewListToArray(listName.value)
@@ -45,6 +40,32 @@ function IntializeListEvent() {
         displayTodosCard();
         listDialog.close();
         form.reset();
+    })
+}
+
+function InitializeTodosEvent() {
+    const form = document.querySelector('.todosform');
+    const todosDialog = document.querySelector('#addtodos');
+    const cancelTodosDialogBtn = document.querySelector('.cancel-todos-btn');
+
+    cancelTodosDialogBtn.addEventListener('click', () => {
+        todosDialog.close();
+        form.reset();
+        form.id = '';
+    })
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formId = e.target.id;
+        const todosTitle = document.querySelector('#todosname');
+        const dueDate = document.querySelector('#duedate');
+        const detail = document.querySelector('#detail');
+
+        addNewTodosToArray(todosTitle.value, dueDate.value, detail.value);
+        console.log(listArray);
+        todosDialog.close();
+        form.reset();
+        form.id = '';
     })
 }
 
@@ -76,6 +97,8 @@ function displayListName() {
 
 function displayTodosCard() {
     const todosArea = document.querySelector('.todos-area');
+    const todosDialog = document.querySelector('#addtodos')
+    const form = document.querySelector('.todosform');
     todosArea.replaceChildren();
 
     for(const list of listArray) {
@@ -92,6 +115,12 @@ function displayTodosCard() {
         const addTodosBtn = document.createElement('div');
         addTodosBtn.textContent = '+';
         addTodosBtn.classList.add('addtodosbtn');
+        addTodosBtn.id = list.listId;
+        addTodosBtn.addEventListener('click', () => {
+            todosDialog.showModal();
+            form.reset();
+            form.id = addTodosBtn.id;
+        })
 
         cardTitle.append(listName, addTodosBtn);
         todosCard.append(cardTitle);

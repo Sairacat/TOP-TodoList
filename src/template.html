@@ -41,14 +41,28 @@
         </div>
         <div class="main">
             <div class="search-bar"></div>
-            <div class="todos-area">
-                    <div class="todos-card">
-                    <div class="card-title">
-                        <h2>Personal</h2>
-                        <div class="addtodosbtn">+</div>
+            <div class="todos-area"></div>
+            <dialog id="addtodos">
+                <form action="" class="todosform">
+                    <h2>New Todos</h2>
+                    
+                    <div class="formcontrol">
+                        <label for="todosname">Title:</label>
+                        <input type="text" id="todosname" required>
+                        <input type="date" id="duedate" required>
                     </div>
-                </div>
-            </div>
+
+                    <div class="formcontrol">
+                        <label for="detail">Detail:</label>
+                        <textarea id="detail" cols="24" rows="2" maxlength="75"></textarea>
+                    </div>
+
+                    <div class="button-set">
+                        <button class="confirm-todos-btn" type="submit">Confirm</button>
+                        <button class="cancel-todos-btn">Cancel</button>
+                    </div>
+                </form>
+            </dialog>
         </div>
     </div>
 </body>
