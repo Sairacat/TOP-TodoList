@@ -71,10 +71,22 @@ function InitializeTodosEvent() {
 
 function displayListName() {
     const listContainer = document.querySelector('.list-container');
-    listContainer.replaceChildren();
+    const currentListId = listArray.map(list => list.listId);
+    const currentListUnit = Array.from(listContainer.children);
+    currentListUnit.forEach(unit => {
+        if(!currentListId.includes(unit.dataset.unitId)) {
+            unit.remove();
+        }
+    })
 
     for(const list of listArray) {
+        const isInDom = document.querySelector(`[data-unit-id = "${list.listId}"]`);
+        if(isInDom) {
+            continue;
+        }
+
         const listUnit = document.createElement('div');
+        listUnit.dataset.unitId = list.listId;
         listUnit.classList.add('list-unit');
         listUnit.classList.add('unit-fadeIn');
 
@@ -83,9 +95,8 @@ function displayListName() {
 
         const deleteBtn = document.createElement('span');
         deleteBtn.classList.add('delete-list-btn');
-        deleteBtn.id = list.listId;
         deleteBtn.addEventListener('click', () => {
-            deleteListFromArray(deleteBtn.id);
+            deleteListFromArray(list.listId);
             displayListName();
             displayTodosCard();
         })
@@ -99,10 +110,23 @@ function displayTodosCard() {
     const todosArea = document.querySelector('.todos-area');
     const todosDialog = document.querySelector('#addtodos')
     const form = document.querySelector('.todosform');
-    todosArea.replaceChildren();
+
+    const currentListId = listArray.map(list => list.listId);
+    const currentTodosCards = Array.from(todosArea.children);
+    currentTodosCards.forEach(card => {
+        if(!currentListId.includes(card.dataset.cardId)) {
+            card.remove();
+        }
+    })
 
     for(const list of listArray) {
+        const isInDom = document.querySelector(`[data-card-id = "${list.listId}"]`);
+        if(isInDom) {
+            continue;
+        }
+
         const todosCard = document.createElement('div');
+        todosCard.dataset.cardId = list.listId;
         todosCard.classList.add('todos-card');
         todosCard.classList.add('unit-fadeIn');
 
