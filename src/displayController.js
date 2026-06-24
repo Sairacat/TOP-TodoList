@@ -173,7 +173,12 @@ function displayTodosUnit(obj, formId) {
     todosBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         deleteTodosFromArray(obj.todosId, formId);
-        todosUnit.remove();
+        setTimeout(() => {
+            todosUnit.classList.add('unit-fade-out');
+            todosUnit.addEventListener('animationend', () => {
+                todosUnit.remove();
+            }, {once: true})
+        }, 1000)
     })
 
     const upperUnitPart = document.createElement('div');
