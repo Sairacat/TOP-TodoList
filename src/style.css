@@ -306,6 +306,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 30px;
 }
 
 
@@ -360,6 +361,39 @@ textarea {
 
 .cancel-todos-btn {
     background-color: red;
+}
+
+.todos-unit {
+    padding: 15px;
+    margin-bottom: 10px;
+    border: none;
+    border-left: 10px solid yellowgreen;
+    border-radius: 12px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    height: 60px;
+}
+
+.todos-unit-unfold {
+    height: max-content;
+}
+
+.todos-unit:hover {
+    cursor: pointer;
+}
+
+.upper-unit-part {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.todos-detail {
+    word-break: break-all;
 }
 
 

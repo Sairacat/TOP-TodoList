@@ -6,18 +6,40 @@ function createNewTodos(title, dueDate, detail) {
     return {title, dueDate, detail, todosId};
 }
 
-function addNewTodosToArray(title, dueDate, detail) {
-    const newTodos = createNewTodos(title, dueDate, detail);
-    const form = document.querySelector('.todosform');
-
+function addNewTodosToArray(obj, formId) {
     for(const list of listArray) {
-        if(list.listId === form.id) {
-            list.todosArray.push(newTodos);
+        if(list.listId === formId) {
+            list.todosArray.push(obj);
             break;   
         }else {
             continue;
         }
     }
+}
+
+function deleteTodosFromArray(todosId, formId) {
+    const getTodosArray = (formId) => {
+        for(const list of listArray) {
+            if(formId === list.listId) {
+                return list.todosArray;
+                break;
+            }else {
+                continue;
+            }
+        }
+    }
+
+    const currentTodosArray = getTodosArray(formId);
+
+    for(const todos of currentTodosArray) {
+        if(todosId === todos.todosId) {
+            currentTodosArray.splice(currentTodosArray.indexOf(todos), 1);
+            break;
+        }else {
+            continue;
+        }
+    }
+
 }
 
 function setTodayAsMin() {
@@ -32,4 +54,4 @@ function setTodayAsMin() {
     return formattedToday;
 }
 
-export {addNewTodosToArray}
+export {createNewTodos, addNewTodosToArray, deleteTodosFromArray}

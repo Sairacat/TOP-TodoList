@@ -1,5 +1,5 @@
 import {addNewListToArray, deleteListFromArray, listArray} from "./list.js";
-import {addNewTodosToArray } from "./todos.js";
+import {addNewTodosToArray, createNewTodos, deleteTodosFromArray } from "./todos.js";
 
 function init() {
     InitializeCollapseEvent();
@@ -56,16 +56,19 @@ function InitializeTodosEvent() {
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-        const formId = e.target.id;
+        const formId = e.target.dataset.formId;
         const todosTitle = document.querySelector('#todosname');
         const dueDate = document.querySelector('#duedate');
         const detail = document.querySelector('#detail');
+        const newTodos = createNewTodos(todosTitle.value, dueDate.value, detail.value);
 
-        addNewTodosToArray(todosTitle.value, dueDate.value, detail.value);
+        addNewTodosToArray(newTodos, formId);
+        displayTodosUnit(newTodos, formId);
+
         console.log(listArray);
         todosDialog.close();
         form.reset();
-        form.id = '';
+        form.dataset.formId = '';
     })
 }
 
@@ -139,11 +142,11 @@ function displayTodosCard() {
         const addTodosBtn = document.createElement('div');
         addTodosBtn.textContent = '+';
         addTodosBtn.classList.add('addtodosbtn');
-        addTodosBtn.id = list.listId;
+        addTodosBtn.dataset.addBtnId = list.listId;
         addTodosBtn.addEventListener('click', () => {
             todosDialog.showModal();
             form.reset();
-            form.id = addTodosBtn.id;
+            form.dataset.formId = addTodosBtn.dataset.addBtnId;
         })
 
         cardTitle.append(listName, addTodosBtn);
@@ -152,6 +155,42 @@ function displayTodosCard() {
     }
 }
 
+function displayTodosUnit(obj, formId) {
+    const todosCard = document.querySelector(`[data-card-id = "${formId}"]`);
+
+    const todosUnit = document.createElement('div');
+    todosUnit.classList.add('todos-unit');
+    todosUnit.classList.add('unit-fadeIn');
+
+    const todosTitle = document.createElement('div');
+    todosTitle.textContent = obj.title.slice(0, 1).toUpperCase() + obj.title.slice(1);
+
+    const todosDueDate = document.createElement('div');
+    todosDueDate.textContent = obj.dueDate;
+
+    const todosBtn = document.createElement('input');
+    todosBtn.type = 'checkbox';
+    todosBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        deleteTodosFromArray(obj.todosId, formId);
+        todosUnit.remove();
+    })
+
+    const upperUnitPart = document.createElement('div');
+    upperUnitPart.classList.add('upper-unit-part');
+    upperUnitPart.append(todosTitle, todosDueDate, todosBtn);
+    upperUnitPart.addEventListener('click', () => {
+        todosUnit.classList.toggle('todos-unit-unfold');
+    })
+
+
+    const todosDetail = document.createElement('div');
+    todosDetail.classList.add('todos-detail');
+    todosDetail.textContent = obj.detail;
+
+    todosUnit.append(upperUnitPart, todosDetail);
+    todosCard.append(todosUnit);
+}
 
 
 export {init};
