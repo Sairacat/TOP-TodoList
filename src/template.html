@@ -40,7 +40,9 @@
             <div class="collapse-btn"></div>
         </div>
         <div class="main">
-            <div class="search-bar"></div>
+            <div class="search-bar-area">
+                <input type="text" id="search-bar" placeholder="Sorted by title">
+            </div>
             <div class="todos-area"></div>
             <dialog id="addtodos">
                 <form action="" class="todosform">
@@ -49,7 +51,10 @@
                     <div class="formcontrol">
                         <label for="todosname">Title:</label>
                         <input type="text" id="todosname" required>
-                        <input type="date" id="duedate" required>
+                        <input type="date" 
+                               id="duedate" 
+                               max="2026-12-31"
+                               required>
                     </div>
 
                     <div class="formcontrol">

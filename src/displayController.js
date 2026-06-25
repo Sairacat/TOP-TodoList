@@ -1,10 +1,11 @@
-import {addNewListToArray, deleteListFromArray, listArray} from "./list.js";
-import {addNewTodosToArray, createNewTodos, deleteTodosFromArray } from "./todos.js";
+import {createNewList, addNewListToArray, deleteListFromArray, getLengthOfTodosArray, listArray} from "./list.js";
+import {addNewTodosToArray, createNewTodos, deleteTodosFromArray, getAllTodosArray, setTodayAsMin } from "./todos.js";
 
 function init() {
     InitializeCollapseEvent();
     IntializeListEvent();
     InitializeTodosEvent();
+    intializeSearchBarEvent();
 
 }
 
@@ -35,9 +36,9 @@ function IntializeListEvent() {
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-        addNewListToArray(listName.value)
-        displayListName();
-        displayTodosCard();
+        const newList = createNewList(listName.value);
+        addNewListToArray(newList);
+        displayListNameAndTodosCard(newList);
         listDialog.close();
         form.reset();
     })
@@ -47,6 +48,8 @@ function InitializeTodosEvent() {
     const form = document.querySelector('.todosform');
     const todosDialog = document.querySelector('#addtodos');
     const cancelTodosDialogBtn = document.querySelector('.cancel-todos-btn');
+    const dueDate = document.querySelector('#duedate');
+    dueDate.min = setTodayAsMin();
 
     cancelTodosDialogBtn.addEventListener('click', () => {
         todosDialog.close();
@@ -57,13 +60,15 @@ function InitializeTodosEvent() {
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         const formId = e.target.dataset.formId;
+        const todosNumber = document.querySelector(`[data-num-id = "${formId}"]`);
         const todosTitle = document.querySelector('#todosname');
-        const dueDate = document.querySelector('#duedate');
+        const fomattedDueDate = dueDate.value.slice(5);
         const detail = document.querySelector('#detail');
-        const newTodos = createNewTodos(todosTitle.value, dueDate.value, detail.value);
+        const newTodos = createNewTodos(todosTitle.value, fomattedDueDate, detail.value);
 
         addNewTodosToArray(newTodos, formId);
         displayTodosUnit(newTodos, formId);
+        todosNumber.textContent = getLengthOfTodosArray(formId);
 
         console.log(listArray);
         todosDialog.close();
@@ -72,93 +77,91 @@ function InitializeTodosEvent() {
     })
 }
 
-function displayListName() {
-    const listContainer = document.querySelector('.list-container');
-    const currentListId = listArray.map(list => list.listId);
-    const currentListUnit = Array.from(listContainer.children);
-    currentListUnit.forEach(unit => {
-        if(!currentListId.includes(unit.dataset.unitId)) {
-            unit.remove();
-        }
-    })
+function intializeSearchBarEvent() {
+    const searchBar = document.querySelector('#search-bar');
 
-    for(const list of listArray) {
-        const isInDom = document.querySelector(`[data-unit-id = "${list.listId}"]`);
-        if(isInDom) {
-            continue;
-        }
-
-        const listUnit = document.createElement('div');
-        listUnit.dataset.unitId = list.listId;
-        listUnit.classList.add('list-unit');
-        listUnit.classList.add('unit-fadeIn');
-
-        const listName = document.createElement('div');
-        listName.textContent = list.name;
-
-        const deleteBtn = document.createElement('span');
-        deleteBtn.classList.add('delete-list-btn');
-        deleteBtn.addEventListener('click', () => {
-            deleteListFromArray(list.listId);
-            displayListName();
-            displayTodosCard();
+    searchBar.addEventListener('input', () => {
+        const currentTodosArray = getAllTodosArray();
+        const currentTodosInDom = Array.from(document.querySelectorAll('.todos-unit'));
+        const todosIdArrayFiltered = currentTodosArray.map(todos => {
+            if(todos.title.startsWith(searchBar.value.toLowerCase())) {
+                return todos.todosId;
+            }
         })
 
-        listUnit.append(listName, deleteBtn);
-        listContainer.append(listUnit);
-    }
+        currentTodosInDom.forEach(todos => {
+            if(!todosIdArrayFiltered.includes(todos.dataset.unitId)) {
+                todos.style.display = 'none';
+            }else {
+                todos.style.display = 'block';
+            }
+        })
+
+
+    })
 }
 
-function displayTodosCard() {
+function displayListNameAndTodosCard(newList) {
+    
+    const listContainer = document.querySelector('.list-container');
     const todosArea = document.querySelector('.todos-area');
     const todosDialog = document.querySelector('#addtodos')
     const form = document.querySelector('.todosform');
 
-    const currentListId = listArray.map(list => list.listId);
-    const currentTodosCards = Array.from(todosArea.children);
-    currentTodosCards.forEach(card => {
-        if(!currentListId.includes(card.dataset.cardId)) {
-            card.remove();
-        }
+    const listUnit = document.createElement('div');
+    listUnit.classList.add('list-unit');
+    listUnit.classList.add('unit-fadeIn');
+
+    const listName = document.createElement('div');
+    listName.textContent = newList.name;
+
+    const todosNumber = document.createElement('span');
+    todosNumber.classList.add('todos-number');
+    todosNumber.dataset.numId = newList.listId;
+    todosNumber.textContent = newList.todosArray.length;
+
+    const todosCard = document.createElement('div');
+    todosCard.dataset.cardId = newList.listId;
+    todosCard.classList.add('todos-card');
+    todosCard.classList.add('unit-fadeIn');
+
+    const cardTitle = document.createElement('div');
+    cardTitle.classList.add('card-title');
+
+    const cardName = document.createElement('h2');
+    cardName.textContent = newList.name;
+
+    const addTodosBtn = document.createElement('div');
+    addTodosBtn.textContent = '+';
+    addTodosBtn.classList.add('addtodosbtn');
+    addTodosBtn.addEventListener('click', () => {
+        todosDialog.showModal();
+        form.reset();
+        form.dataset.formId = newList.listId;
+    })
+ 
+    const deleteBtn = document.createElement('span');
+    deleteBtn.classList.add('delete-list-btn');
+    deleteBtn.addEventListener('click', () => {
+        deleteListFromArray(newList.listId);
+        listUnit.remove();
+        todosCard.remove();
     })
 
-    for(const list of listArray) {
-        const isInDom = document.querySelector(`[data-card-id = "${list.listId}"]`);
-        if(isInDom) {
-            continue;
-        }
-
-        const todosCard = document.createElement('div');
-        todosCard.dataset.cardId = list.listId;
-        todosCard.classList.add('todos-card');
-        todosCard.classList.add('unit-fadeIn');
-
-        const cardTitle = document.createElement('div');
-        cardTitle.classList.add('card-title');
-
-        const listName = document.createElement('h2');
-        listName.textContent = list.name;
-
-        const addTodosBtn = document.createElement('div');
-        addTodosBtn.textContent = '+';
-        addTodosBtn.classList.add('addtodosbtn');
-        addTodosBtn.dataset.addBtnId = list.listId;
-        addTodosBtn.addEventListener('click', () => {
-            todosDialog.showModal();
-            form.reset();
-            form.dataset.formId = addTodosBtn.dataset.addBtnId;
-        })
-
-        cardTitle.append(listName, addTodosBtn);
-        todosCard.append(cardTitle);
-        todosArea.append(todosCard);
-    }
+    listUnit.append(listName, todosNumber, deleteBtn);
+    listContainer.append(listUnit);
+    cardTitle.append(cardName, addTodosBtn);
+    todosCard.append(cardTitle);
+    todosArea.append(todosCard);
 }
+
 
 function displayTodosUnit(obj, formId) {
     const todosCard = document.querySelector(`[data-card-id = "${formId}"]`);
+    const todosNumber = document.querySelector(`[data-num-id = "${formId}"]`);
 
     const todosUnit = document.createElement('div');
+    todosUnit.dataset.unitId = obj.todosId;
     todosUnit.classList.add('todos-unit');
     todosUnit.classList.add('unit-fadeIn');
 
@@ -178,6 +181,7 @@ function displayTodosUnit(obj, formId) {
             todosUnit.addEventListener('animationend', () => {
                 todosUnit.remove();
             }, {once: true})
+            todosNumber.textContent = getLengthOfTodosArray(formId);
         }, 1000)
     })
 

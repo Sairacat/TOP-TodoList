@@ -6,8 +6,7 @@ function createNewList (name) {
     return{name, todosArray, listId};
 }
 
-function addNewListToArray(name) {
-    const newList = createNewList(name);
+function addNewListToArray(newList) {
     listArray.push(newList);
 }
 
@@ -19,5 +18,13 @@ function deleteListFromArray(id) {
     }
 }
 
+function getLengthOfTodosArray(id) {
+    for(const list of listArray) {
+        if(id === list.listId) {
+            return list.todosArray.length
+        }
+    }
+}
 
-export {listArray, addNewListToArray, deleteListFromArray};
+
+export {listArray, addNewListToArray, deleteListFromArray, createNewList, getLengthOfTodosArray};

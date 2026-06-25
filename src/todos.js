@@ -42,6 +42,14 @@ function deleteTodosFromArray(todosId, formId) {
 
 }
 
+function getAllTodosArray() {
+    const todosArrayAll = [];
+    for(const list of listArray) {
+        list.todosArray.forEach(todos => todosArrayAll.push(todos));
+    }
+    return todosArrayAll;
+}
+
 function setTodayAsMin() {
     const today = new Date();
 
@@ -54,4 +62,4 @@ function setTodayAsMin() {
     return formattedToday;
 }
 
-export {createNewTodos, addNewTodosToArray, deleteTodosFromArray}
+export {createNewTodos, addNewTodosToArray, deleteTodosFromArray, setTodayAsMin, getAllTodosArray}
