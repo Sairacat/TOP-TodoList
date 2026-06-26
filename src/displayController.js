@@ -1,11 +1,13 @@
 import {createNewList, addNewListToArray, deleteListFromArray, getLengthOfTodosArray, listArray} from "./list.js";
 import {addNewTodosToArray, createNewTodos, deleteTodosFromArray, getAllTodosArray, setTodayAsMin } from "./todos.js";
+import { initList, AddNewTodosInLocal, deleteTodosInLocal } from "./localStorage.js";
 
 function init() {
     InitializeCollapseEvent();
     IntializeListEvent();
     InitializeTodosEvent();
     intializeSearchBarEvent();
+    intializeLocalStorageEvent();
 
 }
 
@@ -38,6 +40,7 @@ function IntializeListEvent() {
         e.preventDefault();
         const newList = createNewList(listName.value);
         addNewListToArray(newList);
+        localStorage.setItem(newList.listId, JSON.stringify(newList));
         displayListNameAndTodosCard(newList);
         listDialog.close();
         form.reset();
@@ -62,11 +65,11 @@ function InitializeTodosEvent() {
         const formId = e.target.dataset.formId;
         const todosNumber = document.querySelector(`[data-num-id = "${formId}"]`);
         const todosTitle = document.querySelector('#todosname');
-        const fomattedDueDate = dueDate.value.slice(5);
         const detail = document.querySelector('#detail');
-        const newTodos = createNewTodos(todosTitle.value, fomattedDueDate, detail.value);
+        const newTodos = createNewTodos(todosTitle.value, dueDate.value, detail.value);
 
         addNewTodosToArray(newTodos, formId);
+        AddNewTodosInLocal(newTodos, formId);
         displayTodosUnit(newTodos, formId);
         todosNumber.textContent = getLengthOfTodosArray(formId);
 
@@ -84,7 +87,7 @@ function intializeSearchBarEvent() {
         const currentTodosArray = getAllTodosArray();
         const currentTodosInDom = Array.from(document.querySelectorAll('.todos-unit'));
         const todosIdArrayFiltered = currentTodosArray.map(todos => {
-            if(todos.title.startsWith(searchBar.value.toLowerCase())) {
+            if(todos.title.toLowerCase().startsWith(searchBar.value.toLowerCase())) {
                 return todos.todosId;
             }
         })
@@ -99,6 +102,19 @@ function intializeSearchBarEvent() {
 
 
     })
+}
+
+function intializeLocalStorageEvent() {
+    const rawData = Object.entries(localStorage);
+    console.log(rawData);
+    for(const data of rawData) {
+        const cookedData = JSON.parse(data[1]);
+        listArray.push(cookedData);
+        displayListNameAndTodosCard(cookedData);
+        cookedData.todosArray.forEach(todos => {
+            displayTodosUnit(todos, cookedData.listId);
+        })
+    }
 }
 
 function displayListNameAndTodosCard(newList) {
@@ -144,6 +160,7 @@ function displayListNameAndTodosCard(newList) {
     deleteBtn.classList.add('delete-list-btn');
     deleteBtn.addEventListener('click', () => {
         deleteListFromArray(newList.listId);
+        localStorage.removeItem(newList.listId);
         listUnit.remove();
         todosCard.remove();
     })
@@ -169,13 +186,14 @@ function displayTodosUnit(obj, formId) {
     todosTitle.textContent = obj.title.slice(0, 1).toUpperCase() + obj.title.slice(1);
 
     const todosDueDate = document.createElement('div');
-    todosDueDate.textContent = obj.dueDate;
+    todosDueDate.textContent = obj.dueDate.slice(5);
 
     const todosBtn = document.createElement('input');
     todosBtn.type = 'checkbox';
     todosBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         deleteTodosFromArray(obj.todosId, formId);
+        deleteTodosInLocal(obj, formId);
         setTimeout(() => {
             todosUnit.classList.add('unit-fade-out');
             todosUnit.addEventListener('animationend', () => {
