@@ -9,6 +9,7 @@ initList.todosArray.push(initTodos);
 function AddNewTodosInLocal(newTodos, formId) {
     const relatedList = JSON.parse(localStorage.getItem(formId));
     relatedList.todosArray.push(newTodos);
+    console.log(relatedList.todosArray);
     localStorage.setItem(relatedList.listId, JSON.stringify(relatedList));
     
 }

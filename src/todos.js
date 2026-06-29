@@ -50,6 +50,38 @@ function getAllTodosArray() {
     return todosArrayAll;
 }
 
+function formatDueDate(dueDate) {
+    if(dueDate.slice(5).startsWith('0')) {
+        return Number(dueDate.slice(6, 7) + dueDate.slice(8));
+    }else {
+        return Number(dueDate.slice(5, 7) + dueDate.slice(8));
+    }
+}
+
+function findWhichTodosLessUrgent(obj, formId) {
+    const getTodosArray = (formId) => {
+        for(const list of listArray) {
+            if(formId === list.listId) {
+                return list.todosArray;
+                break;
+            }else {
+                continue;
+            }
+        }
+    }
+
+    const currentTodosArray = getTodosArray(formId);
+    const mappedArray = currentTodosArray.filter(todos => todos.todosId !== obj.todosId);
+
+    for(const todos of mappedArray) {
+        if(formatDueDate(obj.dueDate) > formatDueDate(todos.dueDate)) {
+            continue;
+        }else {
+            return todos.todosId;
+        }
+    }
+}
+
 function setTodayAsMin() {
     const today = new Date();
 
@@ -62,4 +94,4 @@ function setTodayAsMin() {
     return formattedToday;
 }
 
-export {createNewTodos, addNewTodosToArray, deleteTodosFromArray, setTodayAsMin, getAllTodosArray}
+export {createNewTodos, addNewTodosToArray, deleteTodosFromArray, setTodayAsMin, getAllTodosArray, findWhichTodosLessUrgent}

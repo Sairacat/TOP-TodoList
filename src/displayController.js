@@ -1,5 +1,5 @@
 import {createNewList, addNewListToArray, deleteListFromArray, getLengthOfTodosArray, listArray} from "./list.js";
-import {addNewTodosToArray, createNewTodos, deleteTodosFromArray, getAllTodosArray, setTodayAsMin } from "./todos.js";
+import {addNewTodosToArray, createNewTodos, deleteTodosFromArray, getAllTodosArray, setTodayAsMin, findWhichTodosLessUrgent } from "./todos.js";
 import { initList, AddNewTodosInLocal, deleteTodosInLocal } from "./localStorage.js";
 
 function init() {
@@ -106,7 +106,6 @@ function intializeSearchBarEvent() {
 
 function intializeLocalStorageEvent() {
     const rawData = Object.entries(localStorage);
-    console.log(rawData);
     for(const data of rawData) {
         const cookedData = JSON.parse(data[1]);
         listArray.push(cookedData);
@@ -216,7 +215,20 @@ function displayTodosUnit(obj, formId) {
     todosDetail.textContent = obj.detail;
 
     todosUnit.append(upperUnitPart, todosDetail);
-    todosCard.append(todosUnit);
+
+    const idOfLessUrgentTodos = findWhichTodosLessUrgent(obj, formId);
+    const lessUrgentTodos = document.querySelector(`[data-unit-id = "${idOfLessUrgentTodos}"]`);
+
+    if(!lessUrgentTodos) {
+        todosCard.append(todosUnit);
+    }else {
+        lessUrgentTodos.before(todosUnit);
+    }
+
+
+    
+
+
 }
 
 
