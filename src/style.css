@@ -469,12 +469,22 @@ input[type="checkbox"]:hover {
 
 #search-bar {
     height: 40px;
-    width: 500px;
+    width: 350px;
     background-color: white;
     border: none;
     outline: none;
-    border-radius: 999px;
+    border-top-left-radius: 999px;
+    border-bottom-left-radius: 999px;
     padding: 20px;
 }
 
+#time-select {
+    height: 40px;
+    background-color: lightskyblue;
+    border: none;
+    outline: none;
+    border-top-right-radius: 999px;
+    border-bottom-right-radius: 999px;
+    padding-left: 20px;
+}
 

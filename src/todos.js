@@ -17,18 +17,18 @@ function addNewTodosToArray(obj, formId) {
     }
 }
 
-function deleteTodosFromArray(todosId, formId) {
-    const getTodosArray = (formId) => {
-        for(const list of listArray) {
-            if(formId === list.listId) {
-                return list.todosArray;
-                break;
-            }else {
-                continue;
-            }
+function getTodosArray(formId) {
+    for(const list of listArray) {
+        if(formId === list.listId) {
+            return list.todosArray;
+            break;
+        }else {
+            continue;
         }
     }
+}
 
+function deleteTodosFromArray(todosId, formId) {
     const currentTodosArray = getTodosArray(formId);
 
     for(const todos of currentTodosArray) {
@@ -59,17 +59,6 @@ function formatDueDate(dueDate) {
 }
 
 function findWhichTodosLessUrgent(obj, formId) {
-    const getTodosArray = (formId) => {
-        for(const list of listArray) {
-            if(formId === list.listId) {
-                return list.todosArray;
-                break;
-            }else {
-                continue;
-            }
-        }
-    }
-
     const currentTodosArray = getTodosArray(formId);
     const mappedArray = currentTodosArray.filter(todos => todos.todosId !== obj.todosId);
 
@@ -94,4 +83,4 @@ function setTodayAsMin() {
     return formattedToday;
 }
 
-export {createNewTodos, addNewTodosToArray, deleteTodosFromArray, setTodayAsMin, getAllTodosArray, findWhichTodosLessUrgent}
+export {createNewTodos, addNewTodosToArray, deleteTodosFromArray, setTodayAsMin, getAllTodosArray, findWhichTodosLessUrgent, formatDueDate}

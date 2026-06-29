@@ -1,25 +1,47 @@
 import { createNewList } from "./list.js";
 import { createNewTodos } from "./todos.js";
 
-const initList = createNewList('Personal');
-const initTodos = createNewTodos('shopping', '2026-06-28', 'Buy a bag of rice in walmart');
-initList.todosArray.push(initTodos);
+function addNewListInLocal(newList) {
+    const localArray = JSON.parse(localStorage.getItem('localArray'));
+    localArray.push(newList);
+    localStorage.setItem('localArray', JSON.stringify(localArray));
+}
+
+function deleteListInLocal(id) {
+    const localArray = JSON.parse(localStorage.getItem('localArray'));
+    for(const list of localArray) {
+        if(list.listId === id) {
+            localArray.splice(localArray.indexOf(list), 1);
+            break;
+        }
+    }
+    localStorage.setItem('localArray', JSON.stringify(localArray));
+}
 
 
 function AddNewTodosInLocal(newTodos, formId) {
-    const relatedList = JSON.parse(localStorage.getItem(formId));
-    relatedList.todosArray.push(newTodos);
-    console.log(relatedList.todosArray);
-    localStorage.setItem(relatedList.listId, JSON.stringify(relatedList));
+    const localArray = JSON.parse(localStorage.getItem('localArray'));
+    for(const list of localArray) {
+        if(list.listId === formId) {
+            list.todosArray.push(newTodos)
+            break;
+        }
+    }
+    localStorage.setItem('localArray', JSON.stringify(localArray));
     
 }
 
 function deleteTodosInLocal(newTodos, formId) {
-    const relatedList = JSON.parse(localStorage.getItem(formId));
-    relatedList.todosArray.splice(relatedList.todosArray.indexOf(newTodos), 1);
-    localStorage.setItem(relatedList.listId, JSON.stringify(relatedList));
+    const localArray = JSON.parse(localStorage.getItem('localArray'));
+    for(const list of localArray) {
+        if(list.listId === formId) {
+            list.todosArray.splice(list.todosArray.indexOf(newTodos), 1);
+            break;
+        }
+    }
+    localStorage.setItem('localArray', JSON.stringify(localArray));
 }
 
 
 
-export {initList, AddNewTodosInLocal, deleteTodosInLocal};
+export { AddNewTodosInLocal, deleteTodosInLocal, addNewListInLocal, deleteListInLocal};
