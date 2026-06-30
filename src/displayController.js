@@ -2,6 +2,7 @@ import {createNewList, addNewListToArray, deleteListFromArray, getLengthOfTodosA
 import {addNewTodosToArray, createNewTodos, deleteTodosFromArray, getAllTodosArray, setTodayAsMin, findWhichTodosLessUrgent, formatDueDate } from "./todos.js";
 import {AddNewTodosInLocal, deleteTodosInLocal, addNewListInLocal, deleteListInLocal } from "./localStorage.js";
 import { parseISO, differenceInDays } from "date-fns";
+import { changePic } from "./changePic.js";
 
 function init() {
     InitializeCollapseEvent();
@@ -9,6 +10,7 @@ function init() {
     InitializeTodosEvent();
     intializeSearchBarEvent();
     intializeLocalStorageEvent();
+    intializeChangePicEvent();
 
 }
 
@@ -152,6 +154,14 @@ function intializeLocalStorageEvent() {
             list.todosArray.forEach(todos => displayTodosUnit(todos, list.listId));
         }
     }
+}
+
+function intializeChangePicEvent() {
+    const changeBtn = document.querySelector('.change-pic');
+
+    changeBtn.addEventListener('click', () => {
+        changePic();
+    })
 }
 
 function displayListNameAndTodosCard(newList) {
