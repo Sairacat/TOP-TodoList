@@ -1,6 +1,7 @@
 import {createNewList, addNewListToArray, deleteListFromArray, getLengthOfTodosArray, listArray} from "./list.js";
 import {addNewTodosToArray, createNewTodos, deleteTodosFromArray, getAllTodosArray, setTodayAsMin, findWhichTodosLessUrgent, formatDueDate } from "./todos.js";
 import {AddNewTodosInLocal, deleteTodosInLocal, addNewListInLocal, deleteListInLocal } from "./localStorage.js";
+import { parseISO, differenceInDays } from "date-fns";
 
 function init() {
     InitializeCollapseEvent();
@@ -99,8 +100,44 @@ function intializeSearchBarEvent() {
                 todos.style.display = 'block';
             }
         })
+    })
 
+    selectUnit.addEventListener('change', () => {
+        const currentTodosArray = getAllTodosArray();
+        const currentTodosInDom = Array.from(document.querySelectorAll('.todos-unit'));
+        const today = setTodayAsMin();
+        
+        if(selectUnit.value === 'week') {
+            const todosIdArrayFiltered = currentTodosArray
+            .filter(todos => differenceInDays(parseISO(todos.dueDate), parseISO(today)) < 8)
+            .map(todos => todos.todosId);
 
+            console.log(todosIdArrayFiltered);
+
+            currentTodosInDom.forEach(todos => {
+                if(!todosIdArrayFiltered.includes(todos.dataset.unitId)) {
+                    todos.style.display = 'none';
+                }else {
+                    todos.style.display = 'block';
+                }
+            })
+        }else if(selectUnit.value === 'month') {
+            const todosIdArrayFiltered = currentTodosArray
+            .filter(todos => differenceInDays(parseISO(todos.dueDate), parseISO(today)) < 31)
+            .map(todos => todos.todosId);
+
+            currentTodosInDom.forEach(todos => {
+                if(!todosIdArrayFiltered.includes(todos.dataset.unitId)) {
+                    todos.style.display = 'none';
+                }else {
+                    todos.style.display = 'block';
+                }
+            })
+        }else {
+            currentTodosInDom.forEach(todos => todos.style.display = 'block');
+        }
+
+        console.log(differenceInDays(parseISO('2026-07-10'), parseISO(today)));
     })
 }
 
